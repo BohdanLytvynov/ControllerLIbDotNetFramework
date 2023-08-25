@@ -1,5 +1,6 @@
 ﻿using ControllerLib_DotNetFramework.Enums;
 using ControllerLib_DotNetFramework.Interfaces;
+using ControllerLib_DotNetFramework.Interfaces.Controller;
 using System;
 using System.Collections.Generic;
 using System.Linq;

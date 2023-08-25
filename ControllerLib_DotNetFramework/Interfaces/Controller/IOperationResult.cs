@@ -6,7 +6,7 @@ using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ControllerLib_DotNetFramework.Interfaces
+namespace ControllerLib_DotNetFramework.Interfaces.Controller
 {
     public interface IOperationResult
     {

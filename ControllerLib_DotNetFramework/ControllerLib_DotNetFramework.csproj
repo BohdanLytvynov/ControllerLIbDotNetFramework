@@ -43,10 +43,16 @@
   <ItemGroup>
     <Compile Include="ControllerBase.cs" />
     <Compile Include="Enums\ExecutionState.cs" />
-    <Compile Include="Interfaces\IController.cs" />
-    <Compile Include="Interfaces\IOperationResult.cs" />
+    <Compile Include="Interfaces\Controller\IController.cs" />
+    <Compile Include="Interfaces\Controller\IOperationResult.cs" />
+    <Compile Include="Interfaces\Logger\ILog.cs" />
+    <Compile Include="Interfaces\Logger\ILogger.cs" />
+    <Compile Include="Loger\ILogSaver.cs" />
+    <Compile Include="Loger\Log.cs" />
+    <Compile Include="Loger\Logger.cs" />
     <Compile Include="OperationResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

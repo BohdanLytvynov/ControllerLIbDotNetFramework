@@ -49,5 +49,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ControllerLib_DotNetFramework\ControllerLib_DotNetFramework.csproj">
+      <Project>{ff240bc1-a068-4d3c-9217-ad493853c722}</Project>
+      <Name>ControllerLib_DotNetFramework</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

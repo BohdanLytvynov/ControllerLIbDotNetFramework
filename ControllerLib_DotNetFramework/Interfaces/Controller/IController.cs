@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
-namespace ControllerLib_DotNetFramework.Interfaces
+namespace ControllerLib_DotNetFramework.Interfaces.Controller
 {
     public interface IController
     {
         #region Events
 
-        event Action<IOperationResult> OperationCompleted;
+        event Action<IOperationResult> OnOperationCompleted;
 
         #endregion
 
@@ -19,11 +20,12 @@ namespace ControllerLib_DotNetFramework.Interfaces
         IOperationResult Execute(string operName,
             Func<object, dynamic> function, object p);
 
-        void ExecuteFunction(string operName,
+        void ExecuteAndGetResultViaEvent(string operName,
             Func<object, dynamic> function, object p);
 
         Task<IOperationResult> ExecuteAsync(string operName,
-            Func<object, dynamic> function, object p);
+            Func<CancellationToken, object, dynamic> function, object p,
+            CancellationToken token);
 
         #endregion
     }
