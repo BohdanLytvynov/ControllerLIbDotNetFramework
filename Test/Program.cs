@@ -1,5 +1,8 @@
 ﻿using ControllerLib_DotNetFramework;
 using ControllerLib_DotNetFramework.Interfaces;
+using ControllerLib_DotNetFramework.Interfaces.Controller;
+using ControllerLib_DotNetFramework.Interfaces.Logger;
+using ControllerLib_DotNetFramework.Loger;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +14,10 @@ namespace Test
 {
     internal class Program
     {
+        static ILogger logger = new Logger();
+
+        static LogSaver logSaver = new LogSaver();
+
         static void Main(string[] args)
         {
             Console.WriteLine("Test");
@@ -47,7 +54,7 @@ namespace Test
                 {
                     int sum = 0;
 
-                    for (int i = 0; i < 10; i++)
+                    for (int i = 0; i < 100000000; i++)
                     {
                         if (ctst.IsCancellationRequested)
                         {
@@ -62,6 +69,8 @@ namespace Test
                 }, null, cts1.Token
                 );
 
+            cts1.Cancel();
+
             var r1 = controller.ExecuteAndGetResultViaEventAsync("CountAsyncReverse",
                 (ctst, a) =>
                 {
@@ -69,6 +78,11 @@ namespace Test
 
                     for (int i = 100; i > 0; i--)
                     {
+                        //if (i == 55)
+                        //{
+                        //    throw new NullReferenceException("Ooops! Smth gone wrong!");
+                        //}
+
                         if (ctst.IsCancellationRequested)
                         {
                             ctst.ThrowIfCancellationRequested();
@@ -90,6 +104,8 @@ namespace Test
         private static void Controller_OperationCompleted(IOperationResult obj)
         {
             Console.WriteLine($"{obj.Name} Result: {obj.Result}");
+
+            logger.SaveLog(logger.Create(obj), logSaver);
         }
     }
 }

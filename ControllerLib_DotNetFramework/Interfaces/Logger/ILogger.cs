@@ -14,6 +14,6 @@ namespace ControllerLib_DotNetFramework.Interfaces.Logger
 
         void SaveLogToCollection(IOperationResult result ,IEnumerable<ILog> logs);
 
-        void SaveLog(IOperationResult result, ILogSaver saver);
+        void SaveLog(ILog log, ILogSaver saver);
     }
 }

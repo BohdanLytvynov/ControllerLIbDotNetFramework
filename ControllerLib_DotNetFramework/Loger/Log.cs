@@ -43,6 +43,15 @@ namespace ControllerLib_DotNetFramework.Loger
         }
         #endregion
 
+        #region Methods
 
+        public override string ToString()
+        {
+            string str = IsError == true? Exception.ToString() : String.Empty;
+
+            return $"Date: {Date} | Operation: {Operation} | ExecutionState: {ExecutionState} | HasError: {IsError} \n\t{str}";
+        }
+
+        #endregion
     }
 }
