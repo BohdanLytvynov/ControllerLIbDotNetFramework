@@ -9,10 +9,11 @@ using System.Threading.Tasks;
 
 namespace ControllerLib_DotNetFramework
 {
-    public class OperationResult : IOperationResult
+    public class OperationResult<TOperName> : IOperationResult<TOperName>
+        where TOperName : struct
     {
         #region Properties
-        public string Name { get; }
+        public TOperName Name { get; }
         public bool Success { get; }
         public Exception Exception { get; }
         public dynamic Result { get; set; }
@@ -22,7 +23,7 @@ namespace ControllerLib_DotNetFramework
         #endregion
 
         #region Ctor
-        public OperationResult(string name, bool success, Exception exception,
+        public OperationResult(TOperName name, bool success, Exception exception,
             ExecutionState state)
         {
             Name = name;

@@ -8,9 +8,10 @@ using System.Threading.Tasks;
 
 namespace Test
 {
-    public class LogSaver : ILogSaver
+    public class LogSaver<TOperType> : ILogSaver<TOperType>
+        where TOperType : struct
     {
-        public void Save(ILog log)
+        public void Save(ILog<TOperType> log)
         {
             Console.WriteLine($"Saving {log}");
         }

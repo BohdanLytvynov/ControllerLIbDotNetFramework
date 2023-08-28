@@ -12,11 +12,14 @@ using System.Threading.Tasks;
 
 namespace Test
 {
+    internal enum Operation { CountAsync = 0, CountAsyncReverse }
+
+
     internal class Program
     {
-        static ILogger logger = new Logger();
+        static ILogger<Operation> logger = new Logger<Operation>();
 
-        static LogSaver logSaver = new LogSaver();
+        static LogSaver<Operation> logSaver = new LogSaver<Operation>();
 
         static void Main(string[] args)
         {
@@ -24,7 +27,7 @@ namespace Test
 
             //Test Sync execution
 
-            ControllerBase controller = new ControllerBase();
+            ControllerBase<Operation> controller = new ControllerBase<Operation>();
 
             //IOperationResult r = controller.Execute("TestFunc", (a) =>
             //{
@@ -49,7 +52,7 @@ namespace Test
 
             CancellationTokenSource cts2 = new CancellationTokenSource();
 
-            var r = controller.ExecuteAndGetResultViaEventAsync("CountAsync", 
+            var r = controller.ExecuteAndGetResultViaEventAsync(Operation.CountAsync, 
                 (ctst,a)=>
                 {
                     int sum = 0;
@@ -69,19 +72,19 @@ namespace Test
                 }, null, cts1.Token
                 );
 
-            cts1.Cancel();
+            //cts1.Cancel();
 
-            var r1 = controller.ExecuteAndGetResultViaEventAsync("CountAsyncReverse",
+            var r1 = controller.ExecuteAndGetResultViaEventAsync(Operation.CountAsyncReverse,
                 (ctst, a) =>
                 {
                     int sum = 0;
 
                     for (int i = 100; i > 0; i--)
                     {
-                        //if (i == 55)
-                        //{
-                        //    throw new NullReferenceException("Ooops! Smth gone wrong!");
-                        //}
+                        if (i == 55)
+                        {
+                            throw new NullReferenceException("Ooops! Smth gone wrong!");
+                        }
 
                         if (ctst.IsCancellationRequested)
                         {
@@ -101,7 +104,7 @@ namespace Test
             Console.ReadKey();
         }
 
-        private static void Controller_OperationCompleted(IOperationResult obj)
+        private static void Controller_OperationCompleted(IOperationResult<Operation> obj)
         {
             Console.WriteLine($"{obj.Name} Result: {obj.Result}");
 

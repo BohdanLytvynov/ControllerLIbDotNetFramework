@@ -8,12 +8,13 @@ using System.Threading.Tasks;
 
 namespace ControllerLib_DotNetFramework.Loger
 {
-    public interface ILogSaver
+    public interface ILogSaver<TOperType>
+        where TOperType : struct
     {
         /// <summary>
         /// Method that saves ILog object to some location (File or db)
         /// </summary>
         /// <param name="result">ILog object</param>
-        void Save(ILog log);
+        void Save(ILog<TOperType> log);
     }
 }

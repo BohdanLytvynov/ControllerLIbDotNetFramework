@@ -8,12 +8,13 @@ using System.Threading.Tasks;
 
 namespace ControllerLib_DotNetFramework.Interfaces.Logger
 {
-    public interface ILogger
+    public interface ILogger<TOperType>
+        where TOperType : struct
     {
-        ILog Create(IOperationResult result);
+        ILog<TOperType> Create(IOperationResult<TOperType> result);
 
-        void SaveLogToCollection(IOperationResult result ,IEnumerable<ILog> logs);
+        void SaveLogToCollection(IOperationResult<TOperType> result ,IEnumerable<ILog<TOperType>> logs);
 
-        void SaveLog(ILog log, ILogSaver saver);
+        void SaveLog(ILog<TOperType> log, ILogSaver<TOperType> saver);
     }
 }

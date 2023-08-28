@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 
 namespace ControllerLib_DotNetFramework.Interfaces.Controller
 {
-    public interface IOperationResult
+    public interface IOperationResult<TOperName>
+        where TOperName : struct
     {
         #region Properties
 
-        string Name { get;}
+        TOperName Name { get;}
 
         bool Success { get;}
 

@@ -8,19 +8,20 @@ using System.Threading.Tasks;
 
 namespace ControllerLib_DotNetFramework.Loger
 {
-    public class Logger : ILogger
+    public class Logger<TOperType> : ILogger<TOperType>
+        where TOperType : struct
     {
         /// <summary>
-        /// Creates Log according to operation execition result
+        /// Creates Log according to operation execution result
         /// </summary>
         /// <param name="result">Operation result</param>
         /// <returns>ILog object</returns>
-        public virtual ILog Create(IOperationResult result)
+        public virtual ILog<TOperType> Create(IOperationResult<TOperType> result)
         {
             if (result == null)
                 return null;
 
-            return new Log(Guid.NewGuid(), DateTime.Now, result.Name,
+            return new Log<TOperType>(Guid.NewGuid(), DateTime.Now, result.Name,
             result.Exception, result.ExecutionState);
         }
 
@@ -29,7 +30,7 @@ namespace ControllerLib_DotNetFramework.Loger
         /// </summary>
         /// <param name="log">ILog object for saving</param>
         /// <param name="saver">IlogSaver object</param>
-        public virtual void SaveLog(ILog log, ILogSaver saver)
+        public virtual void SaveLog(ILog<TOperType> log, ILogSaver<TOperType> saver)
         {
             saver.Save(log);
         }
@@ -39,7 +40,7 @@ namespace ControllerLib_DotNetFramework.Loger
         /// </summary>
         /// <param name="result">Operation Result</param>
         /// <param name="logs">Log collection</param>
-        public virtual void SaveLogToCollection(IOperationResult result, IEnumerable<ILog> logs)
+        public virtual void SaveLogToCollection(IOperationResult<TOperType> result, IEnumerable<ILog<TOperType>> logs)
         {
             if(result == null && logs == null)
                 return;

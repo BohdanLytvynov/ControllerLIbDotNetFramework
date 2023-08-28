@@ -7,23 +7,24 @@ using System.Threading.Tasks;
 
 namespace ControllerLib_DotNetFramework.Interfaces.Controller
 {
-    public interface IController
+    public interface IController<TOperType>
+        where TOperType : struct
     {
         #region Events
 
-        event Action<IOperationResult> OnOperationCompleted;
+        event Action<IOperationResult<TOperType>> OnOperationCompleted;
 
         #endregion
 
         #region Methods
 
-        IOperationResult Execute(string operName,
+        IOperationResult<TOperType> Execute(TOperType operName,
             Func<object, dynamic> function, object p);
 
-        void ExecuteAndGetResultViaEvent(string operName,
+        void ExecuteAndGetResultViaEvent(TOperType operName,
             Func<object, dynamic> function, object p);
 
-        Task<IOperationResult> ExecuteAsync(string operName,
+        Task<IOperationResult<TOperType>> ExecuteAsync(TOperType operName,
             Func<CancellationToken, object, dynamic> function, object p,
             CancellationToken token);
 

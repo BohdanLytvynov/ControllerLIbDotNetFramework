@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace ControllerLib_DotNetFramework
 {
-    public class ControllerBase : IController
+    public class ControllerBase<TOperType> : IController<TOperType>
+        where TOperType : struct
     {
         #region Events
         //Fires when operation finishes
-        public event Action<IOperationResult> OnOperationCompleted;
+        public event Action<IOperationResult<TOperType>> OnOperationCompleted;
         #endregion
         
         #region Ctor
@@ -29,11 +30,11 @@ namespace ControllerLib_DotNetFramework
         /// <param name="p">Parametrs for execution, represented using Object type</param>
         /// <param name="token">Cancellation token</param>
         /// <returns></returns>
-        public async Task ExecuteAndGetResultViaEventAsync(string operName,
+        public async Task ExecuteAndGetResultViaEventAsync(TOperType operName,
             Func<CancellationToken, object, dynamic> function, object p, 
             CancellationToken token)
         {
-            IOperationResult result = null;
+            IOperationResult<TOperType> result = null;
 
             await Task.Run(() =>
             {
@@ -51,11 +52,11 @@ namespace ControllerLib_DotNetFramework
         /// <param name="p">Parametrs for execution, represented using Object type</param>
         /// <param name="token">Cancellation token</param>
         /// <returns>IOperation result object that holds details of operation execution.</returns>
-        public async Task<IOperationResult> ExecuteAsync(string operName,
+        public async Task<IOperationResult<TOperType>> ExecuteAsync(TOperType operName,
             Func<CancellationToken, object, dynamic> function, object p,
             CancellationToken token)
         {
-            IOperationResult result = null;
+            IOperationResult<TOperType> result = null;
 
             await Task.Run(() =>
             {
@@ -73,7 +74,7 @@ namespace ControllerLib_DotNetFramework
         /// <param name="function">Delegate that holds method for execution</param>
         /// <param name="p">Parametrs for execution, represented using Object type</param>
         /// <returns>IOperation result object that holds details of operation execution.</returns>
-        public IOperationResult Execute(string operName, 
+        public IOperationResult<TOperType> Execute(TOperType operName, 
             Func<object, dynamic> function, object p)
         {
             return ExecuteAndTryToCatchException(operName,
@@ -85,7 +86,7 @@ namespace ControllerLib_DotNetFramework
         /// <param name="operName">Name of the operation</param>
         /// <param name="function">Delegate that holds method for execution</param>
         /// <param name="p">Parametrs for execution, represented using Object type</param>        
-        public void ExecuteAndGetResultViaEvent(string operName,
+        public void ExecuteAndGetResultViaEvent(TOperType operName,
             Func<object, dynamic> function, object p)
         {
             OnOperationCompleted?.Invoke(ExecuteAndTryToCatchException(operName,
@@ -100,10 +101,10 @@ namespace ControllerLib_DotNetFramework
         /// <param name="function">Delegate that holds method for execution</param>
         /// <param name="p"></param>
         /// <returns>Parametrs for execution, represented using Object type</returns>
-        private IOperationResult ExecuteAndTryToCatchException(string operName,
+        private IOperationResult<TOperType> ExecuteAndTryToCatchException(TOperType operName,
             Func<object, dynamic> function, object p)
         {
-            IOperationResult result;
+            IOperationResult<TOperType> result;
 
             Exception ex = null;
 
@@ -127,7 +128,7 @@ namespace ControllerLib_DotNetFramework
             }
             finally
             {
-                result = new OperationResult(operName, ex != null ? true : false,
+                result = new OperationResult<TOperType>(operName, ex != null ? true : false,
                     ex, executionState)
                 { Result = ExecutionResult };
             }
@@ -144,11 +145,11 @@ namespace ControllerLib_DotNetFramework
         /// <param name="token"></param>
         /// <param name="p"></param>
         /// <returns></returns>
-        private IOperationResult ExecuteAndTryToCatchExceptionForAsyncFunc(string operName,
+        private IOperationResult<TOperType> ExecuteAndTryToCatchExceptionForAsyncFunc(TOperType operName,
             Func<CancellationToken, object, dynamic> function, CancellationToken token,
             object p)
         {
-            IOperationResult result;
+            IOperationResult<TOperType> result;
 
             Exception ex = null;
 
@@ -177,7 +178,7 @@ namespace ControllerLib_DotNetFramework
             }
             finally
             {
-                result = new OperationResult(operName, ex != null ? true : false,
+                result = new OperationResult<TOperType>(operName, ex != null ? true : false,
                     ex, executionState)
                 { Result = ExecutionResult };
             }

@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace ControllerLib_DotNetFramework.Interfaces.Logger
 {
-    public interface ILog
+    public interface ILog<TOperType>
+        where TOperType : struct
     {
         #region Properties
 
@@ -15,7 +16,7 @@ namespace ControllerLib_DotNetFramework.Interfaces.Logger
 
         DateTime Date { get; set; }
 
-        string Operation { get; set; }
+        TOperType Operation { get; set; }
 
         Exception Exception { get; set; }
 

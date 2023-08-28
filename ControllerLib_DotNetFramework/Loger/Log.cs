@@ -8,14 +8,15 @@ using System.Threading.Tasks;
 
 namespace ControllerLib_DotNetFramework.Loger
 {
-    public class Log : ILog
+    public class Log<TOperType> : ILog<TOperType>
+        where TOperType : struct
     {
         #region Properties
 
         public Guid Id { get; set; }
 
         public DateTime Date { get; set; }
-        public string Operation { get; set; }
+        public TOperType Operation { get; set; }
         public Exception Exception { get; set; }
         public ExecutionState ExecutionState { get; set; }
         public bool IsError { get; set; }
@@ -23,7 +24,7 @@ namespace ControllerLib_DotNetFramework.Loger
         #endregion
 
         #region Ctor
-        public Log(Guid id, DateTime date, string operation,
+        public Log(Guid id, DateTime date, TOperType operation,
             Exception ex, ExecutionState state)
         {
             Id = id;
